@@ -1,23 +1,16 @@
-import { useEffect } from 'react';
-import { getContacts } from 'redux/selectors';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/operations';
 import PropTypes from 'prop-types';
 import css from './ContactForm.module.css';
 
 const ContactForm = () => {
-  const contacts = useSelector(getContacts);
-
-  useEffect(() => {
-    const stringifiedContacts = JSON.stringify(contacts);
-    localStorage.setItem('contacts', stringifiedContacts);
-  }, [contacts]);
-
   const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.target;
-    dispatch(addContact(form.elements.name.value, form.elements.number.value));
+    const name = form.elements.name.value;
+    const phone = form.elements.number.value;
+    dispatch(addContact({ name, phone }));
     e.target.reset();
   };
   return (
